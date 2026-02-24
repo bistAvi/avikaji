@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+/* 
+  PRECIOUS METAL V3: MINIMALIST & NATIVE
+  Focusing on speed and high-contrast innovation.
+*/
+
+@theme {
+  --color-silver-primary: var(--silver);
+  --color-grey-secondary: var(--grey);
+  --color-gold-accent: var(--gold);
+  --color-metal-black: var(--black);
+  --color-metal-white: var(--white);
+
+  --font-sans: "Inter", "Outfit", "sans-serif";
+}
+
+@layer base {
+  :root {
+    --silver: #C0C0C0;
+    --grey: #708090;
+    --gold: #D4AF37;
+    --black: #050505;
+    --white: #FFFFFF;
+  }
+
+  [data-theme='silver'] {
+    --silver: #050505;
+    --grey: #333333;
+    --gold: #8B4513;
+    --black: #F8F9FA;
+    --white: #000000;
+  }
+
+  html {
+    background-color: var(--black);
+    color: var(--silver);
+    /* Native smooth scroll for anchors */
+    scroll-behavior: smooth;
+    transition: background 0.5s ease;
+  }
+
+  body {
+    background-color: var(--black);
+    color: var(--silver);
+    font-family: var(--font-sans);
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+}
+
+/* Minimalist Utilities */
+.glass-metal {
+  @apply backdrop-blur-[15px] border border-metal-white/5 rounded-none;
+  /* Brutalist sharp corners */
+  background: rgba(255, 255, 255, 0.01);
+}
+
+[data-theme='silver'] .glass-metal {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+.btn-precious {
+  @apply px-10 py-4 bg-silver-primary text-metal-black font-black uppercase tracking-[0.3em] rounded-none transition-all border border-transparent;
+}
+
+.btn-precious:hover {
+  @apply bg-transparent text-silver-primary border-silver-primary;
+  box-shadow: 0 0 30px rgba(192, 192, 192, 0.1);
+}
+
+.metal-noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.015;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  z-index: 9999;
+}
+
+/* Scrollbar: Minimalist */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+}
+
+/* Interactive Glows */
+.glow-gold {
+  box-shadow: 0 0 15px var(--gold);
+}

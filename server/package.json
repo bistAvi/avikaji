@@ -1,0 +1,20 @@
+{
+    "name": "silver-portfolio-backend",
+    "version": "1.0.0",
+    "description": "Backend for Avishek portfolio contact form",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js"
+    },
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.1",
+        "express": "^4.21.2",
+        "nodemailer": "^6.10.0"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.9"
+    }
+}
