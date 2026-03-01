@@ -26,10 +26,20 @@ function Word({ children, ...props }) {
     useFrame(({ camera }) => {
         if (!ref.current) return;
         ref.current.quaternion.copy(camera.quaternion);
-        // We use CSS variables via a proxy or just lerp to a perceived theme color
-        const isDark = document.documentElement.getAttribute('data-theme') !== 'silver';
-        const baseColor = isDark ? '#C0C0C0' : '#1a1a1a';
-        ref.current.material.color.lerp(color.set(hovered ? '#D4AF37' : baseColor), 0.1);
+
+        const palette = document.documentElement.getAttribute('data-palette');
+        const theme = document.documentElement.getAttribute('data-theme');
+
+        let baseColor, hoverColor;
+        if (palette === 'classic') {
+            baseColor = theme === 'silver' ? '#1a1a1a' : '#C0C0C0';
+            hoverColor = '#D4AF37';
+        } else {
+            baseColor = theme === 'silver' ? '#2A3A5A' : '#00D9FF';
+            hoverColor = '#B800FF';
+        }
+
+        ref.current.material.color.lerp(color.set(hovered ? hoverColor : baseColor), 0.1);
     });
 
     return (
@@ -77,12 +87,17 @@ function Cloud({ count = 8, radius = 20 }) {
 }
 
 const SkillSphere = () => {
-    const [bgColor, setBgColor] = useState('#050505');
+    const [bgColor, setBgColor] = useState('#0A1428');
 
     useEffect(() => {
         const updateTheme = () => {
+            const palette = document.documentElement.getAttribute('data-palette');
             const theme = document.documentElement.getAttribute('data-theme');
-            setBgColor(theme === 'silver' ? '#e0e0e0' : '#050505');
+            if (palette === 'classic') {
+                setBgColor(theme === 'silver' ? '#e0e0e0' : '#050505');
+            } else {
+                setBgColor(theme === 'silver' ? '#F0F4FA' : '#0A1428');
+            }
         };
         updateTheme();
         window.addEventListener('theme-changed', updateTheme);
@@ -97,7 +112,7 @@ const SkillSphere = () => {
                 <TrackballControls noZoom />
             </Canvas>
             <div className="absolute inset-x-0 bottom-10 flex flex-col items-center pointer-events-none">
-                <span className="text-[10px] font-black tracking-[0.5em] text-gold-accent uppercase opacity-50">Drag to Rotate Matrix</span>
+                <span className="text-[10px] font-black tracking-[0.5em] text-electric-blue uppercase opacity-50 font-mono">Drag to Rotate Matrix</span>
             </div>
         </div>
     );

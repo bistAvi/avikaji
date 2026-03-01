@@ -4,7 +4,6 @@ const AudioContext = createContext(null);
 
 export const AudioProvider = ({ children }) => {
     const playSound = useCallback((type) => {
-        // We'll use frequency-based synthesis for low latency and zero asset dependency
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
@@ -15,13 +14,14 @@ export const AudioProvider = ({ children }) => {
         const now = ctx.currentTime;
 
         if (type === 'click') {
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(800, now);
-            osc.frequency.exponentialRampToValueAtTime(10, now + 0.1);
-            gain.gain.setValueAtTime(0.05, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+            // Electric snap — sharper, more digital
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(1200, now);
+            osc.frequency.exponentialRampToValueAtTime(80, now + 0.08);
+            gain.gain.setValueAtTime(0.04, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
             osc.start(now);
-            osc.stop(now + 0.1);
+            osc.stop(now + 0.08);
         } else if (type === 'whoosh') {
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(100, now);
@@ -31,12 +31,43 @@ export const AudioProvider = ({ children }) => {
             osc.start(now);
             osc.stop(now + 0.3);
         } else if (type === 'hover') {
+            // Subtle photon ping
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(400, now);
-            gain.gain.setValueAtTime(0.01, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+            osc.frequency.setValueAtTime(600, now);
+            osc.frequency.exponentialRampToValueAtTime(900, now + 0.04);
+            gain.gain.setValueAtTime(0.015, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
             osc.start(now);
-            osc.stop(now + 0.05);
+            osc.stop(now + 0.04);
+        } else if (type === 'zap') {
+            // Electric discharge
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(2000, now);
+            osc.frequency.exponentialRampToValueAtTime(50, now + 0.15);
+            gain.gain.setValueAtTime(0.06, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+            osc.start(now);
+            osc.stop(now + 0.15);
+        } else if (type === 'photon') {
+            // Ascending photon burst
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(300, now);
+            osc.frequency.exponentialRampToValueAtTime(1800, now + 0.2);
+            gain.gain.setValueAtTime(0.03, now);
+            gain.gain.linearRampToValueAtTime(0.05, now + 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+            osc.start(now);
+            osc.stop(now + 0.2);
+        } else if (type === 'success') {
+            // Confirmation chime — ascending dual tone
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(500, now);
+            osc.frequency.setValueAtTime(700, now + 0.1);
+            osc.frequency.setValueAtTime(900, now + 0.2);
+            gain.gain.setValueAtTime(0.04, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+            osc.start(now);
+            osc.stop(now + 0.35);
         }
     }, []);
 

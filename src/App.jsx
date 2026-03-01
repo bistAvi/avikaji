@@ -1,33 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from './components/layout/Navbar';
-import NameHero from './components/hero/NameHero';
-import Portfolio from './pages/Portfolio';
-import Lab from './pages/Lab';
-import About from './pages/About';
-import Contact from './pages/Contact';
 import MercuryCursor from './components/ui/MercuryCursor';
+import DiffractionOverlay from './components/ui/DiffractionOverlay';
+
+// Lazy load pages for performance
+const NameHero = lazy(() => import('./components/hero/NameHero'));
+const Portfolio = lazy(() => import('./pages/Portfolio'));
+const Lab = lazy(() => import('./pages/Lab'));
+const About = lazy(() => import('./pages/About'));
+const Contact = lazy(() => import('./pages/Contact'));
+
+const PageLoader = () => (
+    <div className="fixed inset-0 bg-metal-black z-[10000] flex items-center justify-center">
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="w-12 h-12 border-2 border-electric-blue/20 border-t-electric-blue rounded-full animate-spin"
+        />
+    </div>
+);
 
 const LiquidTransition = ({ children }) => {
     return (
-        <>
-            <motion.div
-                className="fixed inset-0 bg-silver-primary z-[99999] origin-bottom pointer-events-none"
-                initial={{ scaleY: 0 }}
-                animate={{ scaleY: 0 }}
-                exit={{ scaleY: 1 }}
-                transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-            />
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-            >
-                {children}
-            </motion.div>
-        </>
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+        >
+            {children}
+        </motion.div>
     );
 };
 
@@ -40,15 +44,18 @@ function AppContent() {
 
             <MercuryCursor />
             <Navbar />
+            <DiffractionOverlay />
 
             <AnimatePresence mode="wait">
-                <Routes location={location} key={location.pathname}>
-                    <Route path="/" element={<LiquidTransition><NameHero /></LiquidTransition>} />
-                    <Route path="/work" element={<LiquidTransition><Portfolio /></LiquidTransition>} />
-                    <Route path="/lab" element={<LiquidTransition><Lab /></LiquidTransition>} />
-                    <Route path="/about" element={<LiquidTransition><About /></LiquidTransition>} />
-                    <Route path="/contact" element={<LiquidTransition><Contact /></LiquidTransition>} />
-                </Routes>
+                <Suspense fallback={<PageLoader />}>
+                    <Routes location={location} key={location.pathname}>
+                        <Route path="/" element={<LiquidTransition><NameHero /></LiquidTransition>} />
+                        <Route path="/projects" element={<LiquidTransition><Portfolio /></LiquidTransition>} />
+                        <Route path="/lab" element={<LiquidTransition><Lab /></LiquidTransition>} />
+                        <Route path="/about" element={<LiquidTransition><About /></LiquidTransition>} />
+                        <Route path="/contact" element={<LiquidTransition><Contact /></LiquidTransition>} />
+                    </Routes>
+                </Suspense>
             </AnimatePresence>
         </div>
     );

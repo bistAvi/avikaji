@@ -1,9 +1,13 @@
+/* Google Fonts — must be first */
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap');
+
 @import "tailwindcss";
 
-/* 
-  PRECIOUS METAL V3: MINIMALIST & NATIVE
-  Focusing on speed and high-contrast innovation.
-*/
+/* ═══════════════════════════════════════════════════════════════
+   PHOTONICS PORTFOLIO — Design System
+   Dual-palette: Photonics (default) / Classic (silver/gold)
+   Toggle via: data-palette="classic" on <html>
+   ═══════════════════════════════════════════════════════════════ */
 
 @theme {
   --color-silver-primary: var(--silver);
@@ -12,32 +16,119 @@
   --color-metal-black: var(--black);
   --color-metal-white: var(--white);
 
-  --font-sans: "Inter", "Outfit", "sans-serif";
+  /* New photonics semantic tokens */
+  --color-electric-blue: var(--electric);
+  --color-neon-purple: var(--neon);
+  --color-glow-green: var(--glow);
+  --color-deep-navy: var(--navy);
+  --color-success-cyan: var(--cyan);
+  --color-warning-red: var(--wred);
+  --color-grid-gray: var(--gridg);
+
+  --font-sans: "Inter", "Outfit", sans-serif;
+  --font-mono: "Space Mono", "Fira Code", monospace;
+  --font-code: "Fira Code", "JetBrains Mono", monospace;
 }
 
 @layer base {
+
+  /* ── PHOTONICS DARK (Default) ── */
   :root {
+    --silver: #C0C0C0;
+    --grey: #708090;
+    --gold: #00D9FF;
+    /* remapped: accent is now electric blue */
+    --black: #0A1428;
+    /* deep navy background */
+    --white: #E0F0FF;
+
+    --electric: #00D9FF;
+    --neon: #B800FF;
+    --glow: #00FF41;
+    --navy: #0A1428;
+    --cyan: #00E5FF;
+    --wred: #FF1744;
+    --gridg: #1E2139;
+
+    /* Glow intensities */
+    --glow-electric: rgba(0, 217, 255, 0.6);
+    --glow-neon: rgba(184, 0, 255, 0.5);
+    --glow-cyan: rgba(0, 229, 255, 0.4);
+    --glow-gold: rgba(255, 215, 0, 0.4);
+  }
+
+  /* ── PHOTONICS LIGHT (Lab Mode) ── */
+  [data-theme='silver'] {
+    --silver: #0A1428;
+    --grey: #2A3A5A;
+    --gold: #0088AA;
+    /* darker cyan for light bg */
+    --black: #F0F4FA;
+    --white: #0A1428;
+
+    --electric: #0088AA;
+    --neon: #7700AA;
+    --glow: #008822;
+    --navy: #F0F4FA;
+    --cyan: #0099BB;
+    --wred: #CC1133;
+    --gridg: #D8DDE8;
+
+    --glow-electric: rgba(0, 136, 170, 0.3);
+    --glow-neon: rgba(119, 0, 170, 0.25);
+    --glow-cyan: rgba(0, 153, 187, 0.2);
+    --glow-gold: rgba(139, 69, 19, 0.2);
+  }
+
+  /* ── CLASSIC DARK (Original silver/gold theme) ── */
+  [data-palette='classic'] {
     --silver: #C0C0C0;
     --grey: #708090;
     --gold: #D4AF37;
     --black: #050505;
     --white: #FFFFFF;
+
+    --electric: #D4AF37;
+    --neon: #C0C0C0;
+    --glow: #D4AF37;
+    --navy: #050505;
+    --cyan: #C0C0C0;
+    --wred: #FF1744;
+    --gridg: #1a1a1a;
+
+    --glow-electric: rgba(212, 175, 55, 0.5);
+    --glow-neon: rgba(192, 192, 192, 0.3);
+    --glow-cyan: rgba(192, 192, 192, 0.3);
+    --glow-gold: rgba(212, 175, 55, 0.5);
   }
 
-  [data-theme='silver'] {
+  /* ── CLASSIC SILVER (Original light theme) ── */
+  [data-palette='classic'][data-theme='silver'] {
     --silver: #050505;
     --grey: #333333;
     --gold: #8B4513;
     --black: #F8F9FA;
     --white: #000000;
+
+    --electric: #8B4513;
+    --neon: #333333;
+    --glow: #8B4513;
+    --navy: #F8F9FA;
+    --cyan: #333333;
+    --wred: #CC1133;
+    --gridg: #e0e0e0;
+
+    --glow-electric: rgba(139, 69, 19, 0.3);
+    --glow-neon: rgba(51, 51, 51, 0.2);
+    --glow-cyan: rgba(51, 51, 51, 0.2);
+    --glow-gold: rgba(139, 69, 19, 0.3);
   }
 
   html {
     background-color: var(--black);
     color: var(--silver);
-    /* Native smooth scroll for anchors */
     scroll-behavior: smooth;
-    transition: background 0.5s ease;
+    transition: background 0.5s ease, color 0.5s ease;
   }
 
   body {
@@ -48,12 +139,25 @@
     min-height: 100vh;
     overflow-x: hidden;
   }
+
+  /* Headings use Space Mono */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-mono);
+  }
 }
 
-/* Minimalist Utilities */
+/* ═══════════════════════════════════════════════════════════════
+   UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Glass panel */
 .glass-metal {
   @apply backdrop-blur-[15px] border border-metal-white/5 rounded-none;
-  /* Brutalist sharp corners */
   background: rgba(255, 255, 255, 0.01);
 }
 
@@ -62,15 +166,122 @@
   border-color: rgba(0, 0, 0, 0.05);
 }
 
+/* Primary button */
 .btn-precious {
   @apply px-10 py-4 bg-silver-primary text-metal-black font-black uppercase tracking-[0.3em] rounded-none transition-all border border-transparent;
 }
 
 .btn-precious:hover {
   @apply bg-transparent text-silver-primary border-silver-primary;
-  box-shadow: 0 0 30px rgba(192, 192, 192, 0.1);
+  box-shadow: 0 0 30px var(--glow-electric);
 }
 
+/* ── Neon Glow Effects ── */
+.neon-border {
+  border: 1px solid var(--electric);
+  box-shadow: 0 0 8px var(--glow-electric), inset 0 0 8px rgba(0, 217, 255, 0.05);
+  transition: box-shadow 0.4s ease;
+}
+
+.neon-border:hover {
+  box-shadow: 0 0 20px var(--glow-electric), 0 0 40px rgba(0, 217, 255, 0.15), inset 0 0 15px rgba(0, 217, 255, 0.08);
+}
+
+.neon-text {
+  color: var(--electric);
+  text-shadow: 0 0 10px var(--glow-electric), 0 0 30px rgba(0, 217, 255, 0.2);
+}
+
+.neon-purple-text {
+  color: var(--neon);
+  text-shadow: 0 0 10px var(--glow-neon), 0 0 30px rgba(184, 0, 255, 0.2);
+}
+
+.glow-text {
+  text-shadow: 0 0 10px var(--glow-electric), 0 0 20px var(--glow-electric);
+}
+
+/* ── Circuit Board Grid Background ── */
+.circuit-grid-bg {
+  position: relative;
+}
+
+.circuit-grid-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--gridg) 1px, transparent 1px),
+    linear-gradient(90deg, var(--gridg) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
+
+/* ── Spectrum Gradient ── */
+.spectrum-gradient {
+  background: linear-gradient(90deg, #B800FF 0%, #00D9FF 35%, #00FF41 65%, #FFD700 100%);
+}
+
+/* ── Animated Pulse Glow ── */
+.pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 5px var(--glow-electric);
+  }
+
+  50% {
+    box-shadow: 0 0 20px var(--glow-electric), 0 0 40px rgba(0, 217, 255, 0.15);
+  }
+}
+
+/* ── Electric Pulse (for logo/badge) ── */
+.electric-pulse {
+  animation: electricPulse 3s ease-in-out infinite;
+}
+
+@keyframes electricPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 5px var(--glow-electric);
+    border-color: var(--electric);
+  }
+
+  50% {
+    box-shadow: 0 0 15px var(--glow-electric), 0 0 30px rgba(0, 217, 255, 0.2);
+    border-color: var(--cyan);
+  }
+}
+
+/* ── Data Stream Effect ── */
+.data-stream {
+  background: linear-gradient(180deg, transparent 0%, var(--electric) 50%, transparent 100%);
+  background-size: 100% 200%;
+  animation: dataStream 2s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes dataStream {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 0% -200%;
+  }
+}
+
+/* ── Noise Overlay ── */
 .metal-noise {
   position: fixed;
   inset: 0;
@@ -80,7 +291,25 @@
   z-index: 9999;
 }
 
-/* Scrollbar: Minimalist */
+/* ── Monospace Tech Tags ── */
+.tech-tag {
+  font-family: var(--font-code);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border: 1px solid var(--electric);
+  color: var(--electric);
+  background: rgba(0, 217, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.tech-tag:hover {
+  background: rgba(0, 217, 255, 0.12);
+  box-shadow: 0 0 10px var(--glow-electric);
+}
+
+/* ── Scrollbar: Photonics ── */
 ::-webkit-scrollbar {
   width: 3px;
 }
@@ -90,10 +319,42 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--gold);
+  background: var(--electric);
+  box-shadow: 0 0 6px var(--glow-electric);
 }
 
-/* Interactive Glows */
+/* ── Interactive Glows ── */
 .glow-gold {
-  box-shadow: 0 0 15px var(--gold);
+  box-shadow: 0 0 15px var(--glow-electric);
+}
+
+.gold-glow {
+  box-shadow: 0 0 15px var(--glow-electric);
+}
+
+/* ── Hover Lift ── */
+.hover-lift {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 217, 255, 0.1);
+}
+
+/* ── Wavelength indicator / tech label ── */
+.wavelength-label {
+  font-family: var(--font-code);
+  font-size: 11px;
+  color: var(--electric);
+  opacity: 0.5;
+  letter-spacing: 0.2em;
+}
+
+/* ── Metallic text (italic accent) ── */
+.text-metallic {
+  background: linear-gradient(135deg, var(--electric) 0%, var(--neon) 50%, var(--cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
